@@ -1,18 +1,11 @@
-﻿var CSStypes = {
+﻿dharma.css = {
     normal: '',
     'class': '.',
     id: '#',
     media: '@'
 }
 
-dharma.CSS = {
-    normal: '',
-    'class': '.',
-    id: '#',
-    media: '@'
-}
-
-function get_browser_info() {
+dharma.css.get_browser_info = function get_browser_info() {
     var ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
 
     if (/trident/i.test(M[1])) {
@@ -34,7 +27,7 @@ function get_browser_info() {
     };
 }
 
-function getBrowserPrefix() {
+dharma.css.getBrowserPrefix = function getBrowserPrefix() {
     var styles = window.getComputedStyle(document.documentElement, '');
 
     var pre = (Array.prototype.slice
@@ -121,147 +114,76 @@ function getCSSRules(cssRules) {
     return rules;
 }
 
-dharma.CSS.createCSSAnimation = function(animation) {
+dharma.css.createCSSAnimation = function (animation) {
     var steps = '';
     for (var i = 0; i < animation.steps.length; i++) {
         steps += animation.steps[i].value + '% { ' + getCSSRules(animation.steps[i].rules) + '; } ';
     }
 
-    var engine = getBrowserPrefix();
+    var engine = dharma.css.getBrowserPrefix();
     console.log(engine.dom);
     if (engine.dom == 'WebKit') {
         var name = '@-webkit-keyframes ' + animation.name;
-        createCSSSelectorBase(name, steps);
+        dharma.css.createCSSSelectorBase(name, steps);
     }
     else if (engine.dom == 'Moz') {
         name = '@-moz-keyframes ' + animation.name;
-        createCSSSelectorBase(name, steps);
+        dharma.css.createCSSSelectorBase(name, steps);
     }
     else {
         var name = '@keyframes ' + animation.name;
-        createCSSSelectorBase(name, steps);
+        dharma.css.createCSSSelectorBase(name, steps);
     }
 }
 
-function createCSSAnimation(animation) {
-    var steps = '';
-    for (var i = 0; i < animation.steps.length; i++) {
-        steps += animation.steps[i].value + '% { ' + getCSSRules(animation.steps[i].rules) + '; } ';
-    }
-
-    var engine = getBrowserPrefix();
-    console.log(engine.dom);
-    if (engine.dom == 'WebKit') {
-        var name = '@-webkit-keyframes ' + animation.name;
-        createCSSSelectorBase(name, steps);
-    }
-    else if (engine.dom == 'Moz') {
-        name = '@-moz-keyframes ' + animation.name;
-        createCSSSelectorBase(name, steps);
-    }
-    else {
-        var name = '@keyframes ' + animation.name;
-        createCSSSelectorBase(name, steps);
-    }
-}
-
-dharma.CSS.createCSSRule = function(style, type) {
-    if (style.name) {
-        var name = type + style.name;
+dharma.css.createCSSRule = function createCSSRule(style) {
+    if (style.selector) {
+        var selector = style.selector;
 
         if (style.base) {
-            var selector = name;
             var cssRules = getCSSRules(style.base);
-            createCSSSelectorBase(selector, cssRules);
+            dharma.css.createCSSSelectorBase(selector, cssRules);
         }
 
         if (style.hover) {
-            var selector = name + ':hover';
+            selector = selector + ':hover';
             var cssRules = getCSSRules(style.hover);
-            createCSSSelectorBase(selector, cssRules);
+            dharma.css.createCSSSelectorBase(selector, cssRules);
         }
 
         if (style.before) {
-            var selector = name + ':before';
+            selector = selector + ':before';
             var cssRules = getCSSRules(style.before);
-            createCSSSelectorBase(selector, cssRules);
+            dharma.css.createCSSSelectorBase(selector, cssRules);
         }
 
         if (style.after) {
-            var selector = name + ':after';
+            selector = selector + ':after';
             var cssRules = getCSSRules(style.after);
-            createCSSSelectorBase(selector, cssRules);
+            dharma.css.createCSSSelectorBase(selector, cssRules);
         }
 
         if (style.link) {
-            var selector = name + ':link';
+            selector = selector + ':link';
             var cssRules = getCSSRules(style.link);
-            createCSSSelectorBase(selector, cssRules);
+            dharma.css.createCSSSelectorBase(selector, cssRules);
         }
 
         if (style.visited) {
-            var selector = name + ':visited';
+            selector = selector + ':visited';
             var cssRules = getCSSRules(style.visited);
-            createCSSSelectorBase(selector, cssRules);
+            dharma.css.createCSSSelectorBase(selector, cssRules);
         }
 
         if (style.last) {
-            var selector = name + ':last-of-type';
+            selector = selector + ':last-of-type';
             var cssRules = getCSSRules(style.last);
-            createCSSSelectorBase(selector, cssRules);
+            dharma.css.createCSSSelectorBase(selector, cssRules);
         }
     }
 }
 
-function createCSSRule(style, type) {
-    if (style.name) {
-        var name = type + style.name;
-
-        if (style.base) {
-            var selector = name;
-            var cssRules = getCSSRules(style.base);
-            createCSSSelectorBase(selector, cssRules);
-        }
-
-        if (style.hover) {
-            var selector = name + ':hover';
-            var cssRules = getCSSRules(style.hover);
-            createCSSSelectorBase(selector, cssRules);
-        }
-
-        if (style.before) {
-            var selector = name + ':before';
-            var cssRules = getCSSRules(style.before);
-            createCSSSelectorBase(selector, cssRules);
-        }
-
-        if (style.after) {
-            var selector = name + ':after';
-            var cssRules = getCSSRules(style.after);
-            createCSSSelectorBase(selector, cssRules);
-        }
-
-        if (style.link) {
-            var selector = name + ':link';
-            var cssRules = getCSSRules(style.link);
-            createCSSSelectorBase(selector, cssRules);
-        }
-
-        if (style.visited) {
-            var selector = name + ':visited';
-            var cssRules = getCSSRules(style.visited);
-            createCSSSelectorBase(selector, cssRules);
-        }
-
-        if (style.last) {
-            var selector = name + ':last-of-type';
-            var cssRules = getCSSRules(style.last);
-            createCSSSelectorBase(selector, cssRules);
-        }
-    }
-}
-
-function createCSSSelectorBase(selector, style) {
+dharma.css.createCSSSelectorBase = function createCSSSelectorBase(selector, style) {
 
     if (!document.styleSheets) {
         return;
